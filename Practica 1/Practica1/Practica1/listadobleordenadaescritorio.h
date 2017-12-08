@@ -365,170 +365,89 @@ public:
 
 struct ListaDobleOrdenadaEscritorio
 {
-
-    ListaDobleOrdenadaEscritorio() {}
-};
-
 private:
-    MyNodeDouble<T> *first;
-    MyNodeDouble<T> *last;
-    MyNodeDouble<T> *current;
 
+    NodoEscritorio* First;
+    NodoEscritorio* Last;
     int size;
 
-    void deletefirst(){
-        MyNodeDouble<T> *aux;
-        aux = first->next;
-        first->next=nullptr;
-        aux->ant = nullptr;
-        first = nullptr;
-        first = aux;
-        size--;
-    }
-    void deletelast(){
-        MyNodeDouble<T>*aux;
-        aux = last->ant;
-        last->ant = nullptr;
-        aux->next = nullptr;
-        last=nullptr;
-        last = aux;
-        size--;
-    }
-    void deletepos(int pos){
-        MyNodeDouble<T> *aux = first;
-        MyNodeDouble<T> *ant = nullptr;
-        int contador = 0;
-        while(contador<pos){
-            ant = aux;
-            aux = aux->next;
-            contador++;
-        }
-        ant->next = aux->next;
-        aux->next->ant = ant;
-        delete aux;
-        size--;
-    }
-
 public:
-    MyListDouble(){
-        listaVacia();
+    ListaDobleOrdenadaEscritorio()
+    {
+       First = nullptr;
+       Last = nullptr;
+       size = 0;
     }
-    void listaVacia(){
-        first = nullptr;
-        last = nullptr;
-        current = nullptr;
+    void addListaDobleOrdenadaEscritorio(NodoEscritorio *TheNew)
+    {
+       if(First == nullptr)
+       {
+           First = Last = TheNew;
+           size++;
+       }
+       if(First->Next == nullptr)
+       {
+           int comp = TheNew->getEscritorioLista().compare(First->getEscritorioLista());
+           if(comp > 0)
+           {
+               Last->Next = TheNew;
+               TheNew->Prev = Last;
+               Last = TheNew;
+               size++;
+           }
+           if(comp < 0)
+           {
+               TheNew->Next = First;
+               First->Prev = TheNew;
+               First = TheNew;
+               First->Prev = nullptr;
+               size++;
+           }
+       }
+       NodoEscritorio* aux = First;
+       NodoEscritorio* Prev = nullptr;
+       while(aux->Next != nullptr)
+       {
+           int comp = TheNew->getEscritorioLista().compare(aux->getEscritorioLista());
+           if(comp > 0)
+           {
+               Prev = aux;
+               aux = aux->Next;
+               continue;
+           }
+           if(comp < 0)
+           {
+               if(Prev == nullptr)
+               {
+                   TheNew->Next = First;
+                   First->Prev = TheNew;
+                   First = TheNew;
+                   First->Prev = nullptr;
+               }
+               else
+               {
+                   TheNew->Next = aux;
+                   Prev->Next = TheNew;
+                   TheNew->Prev = Prev;
+                   aux->Prev = TheNew;
+               }
+               size++;
+           }
+       }
+        TheNew->Next = aux;
+        Prev->Next = TheNew;
+        TheNew->Prev = Prev;
+        aux->Prev = TheNew;
+        size++;
+    }
+    void delListaDobleOrdenadaEscritorio()
+    {
+        First = Last = nullptr;
         size = 0;
     }
-    bool estaVacia(){
-        return first == nullptr;
-    }
-    QString getNext(){
-        if(current == nullptr){
-            return nullptr;
-        }
-        else if(current->next == nullptr){
-            return nullptr;
-        }else{
-            current = current->next;
-            return current->getVal().getnombre();
-        }
-    }
-    QString getPrev(){
-        if(current == nullptr){
-            return nullptr;
-        }
-        else if(current->ant == nullptr){
-            return nullptr;
-        }else{
-            current = current->ant;
-            return current->getVal().getnombre();
-        }
-    }
-    QString getCurrent(){
-        if(current == nullptr){
-            return nullptr;
-        }else{
-            return current->getVal().getnombre();
-        }
 
-    }
-    QString getnombre(){
-        if(current == nullptr){
-            return nullptr;
-        }
-        return current->getVal().getnombre;
-    }
-    void firstcurrent(){
-        current = first;
-    }
+};
 
-    void add(T val){
-        MyNodeDouble<T> *TheNew = new MyNodeDouble<T>(val);
-        if(first == nullptr){
-            first = last = current = TheNew;
-            qInfo() << "Insertar el inicio de lista " + TheNew->getVal().getnombre();
-            size++;
-            return;
-        }
-        if(first->next == nullptr ){
-            int comp = val.compareco(first->getVal());
-            if(comp > 0){
-                qInfo() << "Insertar directamente al final " + TheNew->getVal().getnombre();
-                last->next = TheNew;
-                TheNew->ant = last;
-                last = TheNew;
-                size++;
-                return;
-            }
-            if(comp < 0){
-                qInfo() << "Insertar directamente al inicio "+ TheNew->getVal().getnombre();
-                TheNew->next = first;
-                first->ant = TheNew;
-                first = TheNew;
-                first->ant = nullptr;
-                size++;
-                return;
-            }
-            return;
-        }
-        MyNodeDouble<T> *aux = first;
-        MyNodeDouble<T> *ant = nullptr;
-        while(aux->next != nullptr){
-            int comp = val.compareco(aux->getVal());
-            if(comp > 0){
-                ant = aux;
-                aux = aux->next;
-                continue;
-            }
-            if(comp < 0){
-                if(ant==nullptr){
-                    qInfo() << "Insertando al inicio, antes de: " << aux->getVal().getnombre();
-                    TheNew->next = first;
-                    first->ant = TheNew;
-                    first = TheNew;
-                    first->ant = nullptr;
-
-                }else{
-                    qInfo() << "Insertando entre: " << ant->getVal().getnombre() << " y " << aux->getVal().getnombre();
-                    TheNew->next = aux;
-                    ant->next = TheNew;
-                    TheNew->ant = ant;
-                    aux->ant = TheNew;
-                }
-                size++;
-                return;
-            }
-            qInfo() << "Elemento repetido " + TheNew->getVal().getnombre();
-            return;
-        }
-        qInfo() << "Insertado al final " + TheNew->getVal().getnombre();
-        TheNew->next = aux;
-        ant->next = TheNew;
-        TheNew->ant = ant;
-        aux->ant = TheNew;
-        size++;
-
-    }
     QString buscarcadena(QString val){
         MyNodeDouble<T> *aux = first;
         QString cad = nullptr;
@@ -540,15 +459,6 @@ public:
             aux = aux->next;
         }
     }
-    QString print(){
-        MyNodeDouble<T> *aux = first;
-        QString acum = nullptr;
-        while(aux != nullptr){
-            acum = acum + aux->getVal().getnombre() + ";" ;
-            aux = aux ->next;
-        }
-        return acum;
-    }
     int buscar(QString val){
         MyNodeDouble<T> *aux = first;
         int cont = 0;
@@ -558,27 +468,6 @@ public:
             }
             aux = aux->next;
             cont++;
-        }
-    }
-
-    void deleteall(int pos){
-        if(first==nullptr){
-            qInfo()<< "No hay elementos en la lista";
-        }
-        else if(pos == 0){
-            deletefirst();
-            qInfo()<< "Se elimino el primer elemento";
-        }
-        else if(pos == size -1){
-            deletelast();
-            qInfo()<<  "Se elimino el ultimo elemento";
-        }
-        else if(pos==size){
-            qInfo()<<  "Esta fuera de rango";
-        }
-        else if(pos>0 && pos < size-1){
-            deletepos(pos);
-            qInfo()<<  "Se elimino el elemento intermedio";
         }
     }
     void editlist(int pos,T val){
@@ -595,55 +484,6 @@ public:
                 aux = aux->next;
             }
         }
-    }
-    int sizelist(){
-       return size-1;
-    }
-   void reseteardoble(){
-       first = nullptr;
-       last = nullptr;
-       current = nullptr;
-   }
-
-   void ordenar(int orden){
-       MyNodeDouble<T> *aux,*aux2;
-
-       aux = first;
-       int cont = 0;
-       int comp;
-       while(aux!=nullptr){
-           aux2 = aux->next;
-           while(aux2!=nullptr){
-               if(orden == 0){
-                   comp = aux->getVal().comparena(aux2->getVal());
-               }
-               if(orden == 1){
-                   comp = aux->getVal().compareap(aux2->getVal());
-               }
-               if(orden == 2){
-                   comp = aux->getVal().compareni(aux2->getVal());
-               }
-               if(comp > 0 ){
-                   QString correo = aux->getVal().getcorreo();
-                   QString nombre = aux->getVal().getnombre();
-                   QString apellido =  aux->getVal().getapellido();
-                   QString nickname = aux->getVal().getnickname();
-                   QString edad = aux->getVal().getedad();
-                   QString numero = aux->getVal().getnumero();
-                   Agenda p(correo,nombre,apellido,nickname,edad,numero);
-                   aux->setVal(aux2->getVal());
-                   aux2->setVal(p);
-                   aux2 = aux2->next;
-                   cont++;
-               }
-               if(comp <= 0){
-                   aux2 = aux2->next;
-                   cont++;
-               }
-           }
-           aux = aux->next;
-           cont = 0;
-       }
     }
    void glistdoble(){
        FILE *graficar;

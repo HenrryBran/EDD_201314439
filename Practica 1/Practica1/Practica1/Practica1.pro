@@ -31,7 +31,10 @@ HEADERS += \
         mainwindow.h \
     coladobleavion.h \
     colapasajeros.h \
-    listadobleordenadaescritorio.h
+    listadobleordenadaescritorio.h \
+    listadoblecircularequipaje.h \
+    listamantenimiento.h \
+    colamantenimiento.h
 
 FORMS += \
         mainwindow.ui

@@ -1,6 +1,6 @@
 #-------------------------------------------------
 #
-# Project created by QtCreator 2017-12-06T22:31:45
+# Project created by QtCreator 2017-12-07T22:36:12
 #
 #-------------------------------------------------
 
@@ -8,7 +8,7 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = Practica_1
+TARGET = Practica1
 TEMPLATE = app
 
 # The following define makes your compiler emit warnings if you use
@@ -29,7 +29,9 @@ SOURCES += \
 
 HEADERS += \
         mainwindow.h \
-    coladoble.h
+    coladobleavion.h \
+    colapasajeros.h \
+    listadobleordenadaescritorio.h
 
 FORMS += \
         mainwindow.ui

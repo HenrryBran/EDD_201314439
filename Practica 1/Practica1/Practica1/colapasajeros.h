@@ -3,6 +3,7 @@
 #include <iostream>
 #include <stdlib.h>
 #include <QDebug>
+#include <fstream>
 using namespace std;
 
 struct NodoColaPasajeros
@@ -100,9 +101,10 @@ public:
         }
 
     }
-    void glistdoble(){
+    string gColaPasajeros(){
+        string cola;
         FILE *graficar;
-        graficar = fopen("Pasajeros.dot","w+");
+        graficar = fopen("ColaPasajeros.txt","w+");
         fprintf(graficar, "digraph G {bgcolor=\"white:yellow\" gradientangle=0 \n");
         fprintf(graficar, "rankdir = LR; \n");
         fprintf(graficar, "node [fillcolor=\"white\" \n");
@@ -129,12 +131,20 @@ public:
         }
         else
         {
-            fprintf(graficar," xxx \ [label = \" No hay Pasajeros  \" ];\n");
+            fprintf(graficar," ColaPasajerosNada[label = \" No hay Pasajeros  \" ];\n");
         }
         fprintf(graficar, "} \n");
         fclose(graficar);
-        system("dot -Tpng Pasajeros.dot > Pasajeros.png");
-        system("gnome-open Pasajeros.png");
+
+        fstream archivo("ColaPasajeros.txt");
+        string acum;
+        if(!archivo.is_open())
+            archivo.open("ColaPasajeros.txt",ios::in);
+        while(getline(archivo,acum))
+            cola = cola + acum;
+
+        archivo.close();
+        return cola;
     }
     int getsize()
     {

@@ -3,6 +3,7 @@
 #include <iostream>
 #include <stdlib.h>
 #include <QDebug>
+#include <fstream>
 using namespace std;
 
 struct NodoColaDobleAvion
@@ -103,9 +104,10 @@ public:
         }
 
     }
-    void glistdoble(){
+    string gColaDobleAvion(){
+        string cola;
         FILE *graficar;
-        graficar = fopen("Aviones.dot","w+");
+        graficar = fopen("ColaDobleAvion.txt","w+");
         fprintf(graficar, "digraph G {bgcolor=\"white:yellow\" gradientangle=0 \n");
         fprintf(graficar, "rankdir = LR; \n");
         fprintf(graficar, "node [fillcolor=\"white\" \n");
@@ -145,12 +147,20 @@ public:
         }
         else
         {
-            fprintf(graficar," xxx \ [label = \" Pista de Desabordaje Vacia \" ];\n");
+            fprintf(graficar," ColaDobleAvionNada[label = \" Pista de Desabordaje Vacia \" ];\n");
         }
         fprintf(graficar, "} \n");
         fclose(graficar);
-        system("dot -Tpng Aviones.dot > Aviones.png");
-        system("gnome-open Aviones.png");
+
+        fstream archivo("ColaDobleAvion.txt");
+        string acum;
+        if(!archivo.is_open())
+            archivo.open("ColaDobleAvion.txt",ios::in);
+        while(getline(archivo,acum))
+            cola = cola + acum;
+
+        archivo.close();
+        return cola;
     }
     int getsize()
     {
@@ -177,4 +187,5 @@ public:
         First->setDesbordaje(Desbordaje);
     }
 };
+
 #endif // COLADOBLEAVION_H

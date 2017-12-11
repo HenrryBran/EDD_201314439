@@ -14,6 +14,7 @@ private:
     int Mantenimiento;
 
 public:
+
     NodoColaMantenimiento* Next;
 
     NodoColaMantenimiento(int Tipo,int Mantenimiento)
@@ -52,6 +53,10 @@ public:
         Last = nullptr;
         size = 0;
     }
+    bool estaVacia()
+    {
+        return First == nullptr;
+    }
     void addColaMantenimiento(NodoColaMantenimiento* TheNew)
     {
         if(First == nullptr){
@@ -66,32 +71,34 @@ public:
     }
     void delColaMantenimiento()
     {
-        if(First != Last)
+        if(First != nullptr)
         {
-            NodoColaMantenimiento* aux;
-            aux = First->Next;
-            First->Next = nullptr;
-            First = nullptr;
-            First = aux;
-            size--;
+            if(First != Last)
+            {
+                NodoColaMantenimiento* aux;
+                aux = First->Next;
+                First->Next = nullptr;
+                First = nullptr;
+                First = aux;
+                size--;
+            }
+            else
+            {
+                First = nullptr;
+                Last = nullptr;
+                size = 0;
+            }
         }
-        else
-        {
-            First = nullptr;
-            Last = nullptr;
-            size = 0;
-        }
-
+        return;
     }
     string gColaMantenimiento(){
         string cola;
         FILE *graficar;
         graficar = fopen("ColaMantenimiento.txt","w+");
-        fprintf(graficar, "digraph G {bgcolor=\"white:yellow\" gradientangle=0 \n");
-        fprintf(graficar, "rankdir = LR; \n");
-        fprintf(graficar, "node [fillcolor=\"white\" \n");
-        fprintf(graficar, "style=filled gradientangle=270,shape=record, width=.1, height=.1]; \n");
-        fprintf(graficar, "node[ width=1.5 ]; \n");
+
+        fprintf(graficar, "subgraph cluster_2 { \n");
+        fprintf(graficar, "node [shape = square] color = orange style=filled; \n");
+        fprintf(graficar, "label=\" Aviones en Espera \"; \n");
 
         if(First != nullptr)
         {
@@ -100,12 +107,12 @@ public:
                 int Tipo = aux->getTipo();
                 int Mantenimiento = aux->getMantenimiento();
                 if (Tipo == 0) {
-                    fprintf(graficar,"nd%p\ [label = \"{<a> |  Tipo: Pequeño \\n Pasajeros : %d\ \\n Mantenimiento: %d\ Turnos | <b> }\" ];\n",aux,Mantenimiento);
+                    fprintf(graficar,"nd%p\ [label = \"Tipo: Pequeño \\n Mantenimiento: %d\ Turnos \" ];\n",aux,Mantenimiento);
                 }
                 else if(Tipo == 1){
-                    fprintf(graficar,"nd%p\ [label = \"{<a> |  Tipo: Mediano \\n Pasajeros : %d\ \\n Mantenimiento: %d\ Turnos | <b> }\" ];\n",aux,Mantenimiento);
+                    fprintf(graficar,"nd%p\ [label = \"Tipo: Mediano \\n Mantenimiento: %d\ Turnos \" ];\n",aux,Mantenimiento);
                 }else{
-                    fprintf(graficar,"nd%p\ [label = \"{<a> |  Tipo: Grande \\n Pasajeros : %d\ \\n Mantenimiento: %d\ Turnos | <b> }\" ];\n",aux,,Mantenimiento);
+                    fprintf(graficar,"nd%p\ [label = \"Tipo: Grande \\n Mantenimiento: %d\ Turnos \" ];\n",aux,Mantenimiento);
                 }
                 aux = aux->Next;
             }
@@ -118,7 +125,7 @@ public:
         }
         else
         {
-            fprintf(graficar," ColaMantenimientoNada[label = \" No hay Pasajeros  \" ];\n");
+            fprintf(graficar," ColaMantenimientoNada[label = \" No hay Aviones en Cola de mantenimiento  \" ];\n");
         }
         fprintf(graficar, "} \n");
         fclose(graficar);
@@ -139,11 +146,18 @@ public:
     }
     int getTipo()
     {
-        return First->getTipo();
+        NodoColaMantenimiento *aux = First;
+        return aux->getTipo();
     }
     int getMantenimiento()
     {
-        return First->getMantenimiento();
+        NodoColaMantenimiento *aux = First;
+        return aux->getMantenimiento();
+    }
+    void delall()
+    {
+        First = Last = nullptr;
+        size = 0;
     }
 };
 

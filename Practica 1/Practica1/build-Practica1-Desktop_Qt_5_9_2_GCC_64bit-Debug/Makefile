@@ -215,6 +215,7 @@ DIST          = /home/bran/Qt/5.9.2/gcc_64/mkspecs/features/spec_pre.prf \
 		/home/bran/Qt/5.9.2/gcc_64/mkspecs/features/qt_config.prf \
 		/home/bran/Qt/5.9.2/gcc_64/mkspecs/linux-g++/qmake.conf \
 		/home/bran/Qt/5.9.2/gcc_64/mkspecs/features/spec_post.prf \
+		../Practica1/.qmake.stash \
 		/home/bran/Qt/5.9.2/gcc_64/mkspecs/features/exclusive_builds.prf \
 		/home/bran/Qt/5.9.2/gcc_64/mkspecs/features/toolchain.prf \
 		/home/bran/Qt/5.9.2/gcc_64/mkspecs/features/default_pre.prf \
@@ -235,7 +236,12 @@ DIST          = /home/bran/Qt/5.9.2/gcc_64/mkspecs/features/spec_pre.prf \
 		/home/bran/Qt/5.9.2/gcc_64/mkspecs/features/yacc.prf \
 		/home/bran/Qt/5.9.2/gcc_64/mkspecs/features/lex.prf \
 		../Practica1/Practica1.pro ../Practica1/mainwindow.h \
-		../Practica1/coladobleavion.h ../Practica1/main.cpp \
+		../Practica1/coladobleavion.h \
+		../Practica1/colapasajeros.h \
+		../Practica1/listadobleordenadaescritorio.h \
+		../Practica1/listadoblecircularequipaje.h \
+		../Practica1/listamantenimiento.h \
+		../Practica1/colamantenimiento.h ../Practica1/main.cpp \
 		../Practica1/mainwindow.cpp
 QMAKE_TARGET  = Practica1
 DESTDIR       = 
@@ -408,6 +414,7 @@ Makefile: ../Practica1/Practica1.pro /home/bran/Qt/5.9.2/gcc_64/mkspecs/linux-g+
 		/home/bran/Qt/5.9.2/gcc_64/mkspecs/features/qt_config.prf \
 		/home/bran/Qt/5.9.2/gcc_64/mkspecs/linux-g++/qmake.conf \
 		/home/bran/Qt/5.9.2/gcc_64/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		/home/bran/Qt/5.9.2/gcc_64/mkspecs/features/exclusive_builds.prf \
 		/home/bran/Qt/5.9.2/gcc_64/mkspecs/features/toolchain.prf \
 		/home/bran/Qt/5.9.2/gcc_64/mkspecs/features/default_pre.prf \
@@ -592,6 +599,7 @@ Makefile: ../Practica1/Practica1.pro /home/bran/Qt/5.9.2/gcc_64/mkspecs/linux-g+
 /home/bran/Qt/5.9.2/gcc_64/mkspecs/features/qt_config.prf:
 /home/bran/Qt/5.9.2/gcc_64/mkspecs/linux-g++/qmake.conf:
 /home/bran/Qt/5.9.2/gcc_64/mkspecs/features/spec_post.prf:
+.qmake.stash:
 /home/bran/Qt/5.9.2/gcc_64/mkspecs/features/exclusive_builds.prf:
 /home/bran/Qt/5.9.2/gcc_64/mkspecs/features/toolchain.prf:
 /home/bran/Qt/5.9.2/gcc_64/mkspecs/features/default_pre.prf:
@@ -630,7 +638,7 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /home/bran/Qt/5.9.2/gcc_64/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../Practica1/mainwindow.h ../Practica1/coladobleavion.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../Practica1/mainwindow.h ../Practica1/coladobleavion.h ../Practica1/colapasajeros.h ../Practica1/listadobleordenadaescritorio.h ../Practica1/listadoblecircularequipaje.h ../Practica1/listamantenimiento.h ../Practica1/colamantenimiento.h $(DISTDIR)/
 	$(COPY_FILE) --parents ../Practica1/main.cpp ../Practica1/mainwindow.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../Practica1/mainwindow.ui $(DISTDIR)/
 
@@ -770,8 +778,6 @@ moc_mainwindow.cpp: /home/bran/Qt/5.9.2/gcc_64/include/QtWidgets/QMainWindow \
 		/home/bran/Qt/5.9.2/gcc_64/include/QtGui/qtouchdevice.h \
 		/home/bran/Qt/5.9.2/gcc_64/include/QtWidgets/qtabwidget.h \
 		/home/bran/Qt/5.9.2/gcc_64/include/QtGui/qicon.h \
-		../Practica1/coladobleavion.h \
-		/home/bran/Qt/5.9.2/gcc_64/include/QtCore/QDebug \
 		../Practica1/mainwindow.h \
 		moc_predefs.h \
 		/home/bran/Qt/5.9.2/gcc_64/bin/moc
@@ -900,8 +906,6 @@ main.o: ../Practica1/main.cpp ../Practica1/mainwindow.h \
 		/home/bran/Qt/5.9.2/gcc_64/include/QtGui/qtouchdevice.h \
 		/home/bran/Qt/5.9.2/gcc_64/include/QtWidgets/qtabwidget.h \
 		/home/bran/Qt/5.9.2/gcc_64/include/QtGui/qicon.h \
-		../Practica1/coladobleavion.h \
-		/home/bran/Qt/5.9.2/gcc_64/include/QtCore/QDebug \
 		/home/bran/Qt/5.9.2/gcc_64/include/QtWidgets/QApplication \
 		/home/bran/Qt/5.9.2/gcc_64/include/QtWidgets/qapplication.h \
 		/home/bran/Qt/5.9.2/gcc_64/include/QtCore/qcoreapplication.h \
@@ -1015,9 +1019,61 @@ mainwindow.o: ../Practica1/mainwindow.cpp ../Practica1/mainwindow.h \
 		/home/bran/Qt/5.9.2/gcc_64/include/QtGui/qtouchdevice.h \
 		/home/bran/Qt/5.9.2/gcc_64/include/QtWidgets/qtabwidget.h \
 		/home/bran/Qt/5.9.2/gcc_64/include/QtGui/qicon.h \
-		../Practica1/coladobleavion.h \
-		/home/bran/Qt/5.9.2/gcc_64/include/QtCore/QDebug \
-		ui_mainwindow.h
+		ui_mainwindow.h \
+		/home/bran/Qt/5.9.2/gcc_64/include/QtCore/QVariant \
+		/home/bran/Qt/5.9.2/gcc_64/include/QtWidgets/QAction \
+		/home/bran/Qt/5.9.2/gcc_64/include/QtWidgets/qaction.h \
+		/home/bran/Qt/5.9.2/gcc_64/include/QtWidgets/qactiongroup.h \
+		/home/bran/Qt/5.9.2/gcc_64/include/QtWidgets/QApplication \
+		/home/bran/Qt/5.9.2/gcc_64/include/QtWidgets/qapplication.h \
+		/home/bran/Qt/5.9.2/gcc_64/include/QtCore/qcoreapplication.h \
+		/home/bran/Qt/5.9.2/gcc_64/include/QtCore/qeventloop.h \
+		/home/bran/Qt/5.9.2/gcc_64/include/QtWidgets/qdesktopwidget.h \
+		/home/bran/Qt/5.9.2/gcc_64/include/QtGui/qguiapplication.h \
+		/home/bran/Qt/5.9.2/gcc_64/include/QtGui/qinputmethod.h \
+		/home/bran/Qt/5.9.2/gcc_64/include/QtWidgets/QButtonGroup \
+		/home/bran/Qt/5.9.2/gcc_64/include/QtWidgets/qbuttongroup.h \
+		/home/bran/Qt/5.9.2/gcc_64/include/QtWidgets/QHBoxLayout \
+		/home/bran/Qt/5.9.2/gcc_64/include/QtWidgets/qboxlayout.h \
+		/home/bran/Qt/5.9.2/gcc_64/include/QtWidgets/qlayout.h \
+		/home/bran/Qt/5.9.2/gcc_64/include/QtWidgets/qlayoutitem.h \
+		/home/bran/Qt/5.9.2/gcc_64/include/QtWidgets/qgridlayout.h \
+		/home/bran/Qt/5.9.2/gcc_64/include/QtWidgets/QHeaderView \
+		/home/bran/Qt/5.9.2/gcc_64/include/QtWidgets/qheaderview.h \
+		/home/bran/Qt/5.9.2/gcc_64/include/QtWidgets/qabstractitemview.h \
+		/home/bran/Qt/5.9.2/gcc_64/include/QtWidgets/qabstractscrollarea.h \
+		/home/bran/Qt/5.9.2/gcc_64/include/QtWidgets/qframe.h \
+		/home/bran/Qt/5.9.2/gcc_64/include/QtCore/qabstractitemmodel.h \
+		/home/bran/Qt/5.9.2/gcc_64/include/QtCore/qitemselectionmodel.h \
+		/home/bran/Qt/5.9.2/gcc_64/include/QtWidgets/qabstractitemdelegate.h \
+		/home/bran/Qt/5.9.2/gcc_64/include/QtWidgets/qstyleoption.h \
+		/home/bran/Qt/5.9.2/gcc_64/include/QtWidgets/qabstractspinbox.h \
+		/home/bran/Qt/5.9.2/gcc_64/include/QtGui/qvalidator.h \
+		/home/bran/Qt/5.9.2/gcc_64/include/QtCore/qregularexpression.h \
+		/home/bran/Qt/5.9.2/gcc_64/include/QtWidgets/qslider.h \
+		/home/bran/Qt/5.9.2/gcc_64/include/QtWidgets/qabstractslider.h \
+		/home/bran/Qt/5.9.2/gcc_64/include/QtWidgets/qstyle.h \
+		/home/bran/Qt/5.9.2/gcc_64/include/QtWidgets/qtabbar.h \
+		/home/bran/Qt/5.9.2/gcc_64/include/QtWidgets/qrubberband.h \
+		/home/bran/Qt/5.9.2/gcc_64/include/QtWidgets/QLabel \
+		/home/bran/Qt/5.9.2/gcc_64/include/QtWidgets/qlabel.h \
+		/home/bran/Qt/5.9.2/gcc_64/include/QtWidgets/QLineEdit \
+		/home/bran/Qt/5.9.2/gcc_64/include/QtWidgets/qlineedit.h \
+		/home/bran/Qt/5.9.2/gcc_64/include/QtGui/qtextcursor.h \
+		/home/bran/Qt/5.9.2/gcc_64/include/QtGui/qtextformat.h \
+		/home/bran/Qt/5.9.2/gcc_64/include/QtGui/qpen.h \
+		/home/bran/Qt/5.9.2/gcc_64/include/QtGui/qtextoption.h \
+		/home/bran/Qt/5.9.2/gcc_64/include/QtWidgets/QMenuBar \
+		/home/bran/Qt/5.9.2/gcc_64/include/QtWidgets/qmenubar.h \
+		/home/bran/Qt/5.9.2/gcc_64/include/QtWidgets/qmenu.h \
+		/home/bran/Qt/5.9.2/gcc_64/include/QtWidgets/QPushButton \
+		/home/bran/Qt/5.9.2/gcc_64/include/QtWidgets/qpushbutton.h \
+		/home/bran/Qt/5.9.2/gcc_64/include/QtWidgets/qabstractbutton.h \
+		/home/bran/Qt/5.9.2/gcc_64/include/QtWidgets/QStatusBar \
+		/home/bran/Qt/5.9.2/gcc_64/include/QtWidgets/qstatusbar.h \
+		/home/bran/Qt/5.9.2/gcc_64/include/QtWidgets/QToolBar \
+		/home/bran/Qt/5.9.2/gcc_64/include/QtWidgets/qtoolbar.h \
+		/home/bran/Qt/5.9.2/gcc_64/include/QtWidgets/QWidget
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../Practica1/mainwindow.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp 

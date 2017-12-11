@@ -1,0 +1,5 @@
+subgraph cluster_2 { 
+node [shape = square] color = orange style=filled; 
+label=" Aviones en Espera "; 
+ ColaMantenimientoNada[label = " No hay Aviones en Cola de mantenimiento  " ];
+} 

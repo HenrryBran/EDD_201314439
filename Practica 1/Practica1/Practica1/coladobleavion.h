@@ -16,6 +16,7 @@ private:
     int Mantenimiento;
 
 public:
+
     NodoColaDobleAvion* Next;
     NodoColaDobleAvion* Prev;
 
@@ -61,15 +62,22 @@ public:
 struct ColaDobleAvion
 {
 private:
+
     NodoColaDobleAvion* First;
     NodoColaDobleAvion* Last;
     int size;
+
 public:
+
     ColaDobleAvion()
     {
         First = nullptr;
         Last = nullptr;
         size = 0;
+    }
+    bool estaVacia()
+    {
+        return First == nullptr;
     }
     void addColaDobleAvion(NodoColaDobleAvion* TheNew)
     {
@@ -86,33 +94,35 @@ public:
     }
     void delColaDobleAvion()
     {
-        if(First != Last)
+        if(First != nullptr)
         {
-            NodoColaDobleAvion* aux;
-            aux = First->Next;
-            First->Next = nullptr;
-            aux->Prev = nullptr;
-            First = nullptr;
-            First = aux;
-            size--;
+            if(First != Last)
+            {
+                NodoColaDobleAvion* aux;
+                aux = First->Next;
+                First->Next = nullptr;
+                aux->Prev = nullptr;
+                First = nullptr;
+                First = aux;
+                size--;
+            }
+            else
+            {
+                First = nullptr;
+                Last = nullptr;
+                size = 0;
+            }
         }
-        else
-        {
-            First = nullptr;
-            Last = nullptr;
-            size = 0;
-        }
-
+        return;
     }
     string gColaDobleAvion(){
         string cola;
         FILE *graficar;
         graficar = fopen("ColaDobleAvion.txt","w+");
-        fprintf(graficar, "digraph G {bgcolor=\"white:yellow\" gradientangle=0 \n");
-        fprintf(graficar, "rankdir = LR; \n");
-        fprintf(graficar, "node [fillcolor=\"white\" \n");
-        fprintf(graficar, "style=filled gradientangle=270,shape=record, width=.1, height=.1]; \n");
-        fprintf(graficar, "node[ width=1.5 ]; \n");
+
+        fprintf(graficar, "subgraph cluster_0 { \n");
+        fprintf(graficar, "node [shape = square] color = orange style=filled; \n");
+        fprintf(graficar, "label=\" Llegada De Aviones \"; \n");
 
         if(First != nullptr)
         {
@@ -123,12 +133,12 @@ public:
                 int Pasajeros = aux->getPasajeros();
                 int Mantenimiento = aux->getMantenimiento();
                 if (Tipo == 0) {
-                    fprintf(graficar,"nd%p\ [label = \"{<a> |  Tipo: Pequeño \\n Pasajeros : %d\ \\n Desabordaje: %d\ Turnos \\n  Mantenimiento: %d\ Turnos | <b> }\" ];\n",aux,Pasajeros,Desbordaje,Mantenimiento);
+                    fprintf(graficar,"nd%p\ [label = \"Tipo: Pequeño \\n Pasajeros : %d\ \\n Desabordaje: %d\ Turnos \\n  Mantenimiento: %d\ Turnos \" ];\n",aux,Pasajeros,Desbordaje,Mantenimiento);
                 }
                 else if(Tipo == 1){
-                    fprintf(graficar,"nd%p\ [label = \"{<a> |  Tipo: Mediano \\n Pasajeros : %d\ \\n Desabordaje: %d\ Turnos \\n  Mantenimiento: %d\ Turnos | <b> }\" ];\n",aux,Pasajeros,Desbordaje,Mantenimiento);
+                    fprintf(graficar,"nd%p\ [label = \"Tipo: Mediano \\n Pasajeros : %d\ \\n Desabordaje: %d\ Turnos \\n  Mantenimiento: %d\ Turnos \" ];\n",aux,Pasajeros,Desbordaje,Mantenimiento);
                 }else{
-                    fprintf(graficar,"nd%p\ [label = \"{<a> |  Tipo: Grande \\n Pasajeros : %d\ \\n Desabordaje: %d\ Turnos \\n  Mantenimiento: %d\ Turnos | <b> }\" ];\n",aux,Pasajeros,Desbordaje,Mantenimiento);
+                    fprintf(graficar,"nd%p\ [label = \"Tipo: Grande \\n Pasajeros : %d\ \\n Desabordaje: %d\ Turnos \\n  Mantenimiento: %d\ Turnos  \" ];\n",aux,Pasajeros,Desbordaje,Mantenimiento);
                 }
                 aux = aux->Next;
             }
@@ -149,13 +159,17 @@ public:
         {
             fprintf(graficar," ColaDobleAvionNada[label = \" Pista de Desabordaje Vacia \" ];\n");
         }
+
         fprintf(graficar, "} \n");
         fclose(graficar);
 
         fstream archivo("ColaDobleAvion.txt");
+
         string acum;
+
         if(!archivo.is_open())
             archivo.open("ColaDobleAvion.txt",ios::in);
+
         while(getline(archivo,acum))
             cola = cola + acum;
 
@@ -168,23 +182,33 @@ public:
     }
     int getTipo()
     {
-        return First->getTipo();
+        NodoColaDobleAvion *aux = First;
+        return aux->getTipo();
     }
     int getPasajeros()
     {
-        return First->getPasajeros();
+        NodoColaDobleAvion *aux = First;
+        return aux->getPasajeros();
     }
     int getMantenimiento()
     {
-        return First->getMantenimiento();
+        NodoColaDobleAvion *aux = First;
+        return aux->getMantenimiento();
     }
     int getDesbordaje()
     {
-        return First->getDesbordaje();
+        NodoColaDobleAvion *aux = First;
+        return aux->getDesbordaje();
     }
     void setDesbordaje(int Desbordaje)
     {
-        First->setDesbordaje(Desbordaje);
+        NodoColaDobleAvion *aux = First;
+        return aux->setDesbordaje(Desbordaje);
+    }
+    void delall()
+    {
+        First = Last = nullptr;
+        size = 0;
     }
 };
 

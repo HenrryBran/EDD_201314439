@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1512971418 source:/home/bran/Documentos/EDDVacas/Tarea_1/ListaDobleEnlazada/Listadoble.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+

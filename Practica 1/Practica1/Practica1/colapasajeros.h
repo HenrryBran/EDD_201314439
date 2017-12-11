@@ -16,6 +16,7 @@ private:
     int Registro;
 
 public:
+
     NodoColaPasajeros* Next;
 
     NodoColaPasajeros(int Id,int Maletas,int Documentos,int Registro)
@@ -59,16 +60,22 @@ public:
 struct ColaPasajeros
 {
 private:
+
     NodoColaPasajeros* First;
     NodoColaPasajeros* Last;
     int size;
 
 public:
+
     ColaPasajeros()
     {
         First = nullptr;
         Last = nullptr;
         size = 0;
+    }
+    bool estaVacia()
+    {
+        return First == nullptr;
     }
     void addColaPasajeros(NodoColaPasajeros* TheNew)
     {
@@ -84,20 +91,23 @@ public:
     }
     void delColaPasajeros()
     {
-        if(First != Last)
+        if(First != nullptr)
         {
-            NodoColaPasajeros* aux;
-            aux = First->Next;
-            First->Next = nullptr;
-            First = nullptr;
-            First = aux;
-            size--;
-        }
-        else
-        {
-            First = nullptr;
-            Last = nullptr;
-            size = 0;
+            if(First != Last)
+            {
+                NodoColaPasajeros* aux;
+                aux = First->Next;
+                First->Next = nullptr;
+                First = nullptr;
+                First = aux;
+                size--;
+            }
+            else
+            {
+                First = nullptr;
+                Last = nullptr;
+                size = 0;
+            }
         }
 
     }
@@ -105,11 +115,10 @@ public:
         string cola;
         FILE *graficar;
         graficar = fopen("ColaPasajeros.txt","w+");
-        fprintf(graficar, "digraph G {bgcolor=\"white:yellow\" gradientangle=0 \n");
-        fprintf(graficar, "rankdir = LR; \n");
-        fprintf(graficar, "node [fillcolor=\"white\" \n");
-        fprintf(graficar, "style=filled gradientangle=270,shape=record, width=.1, height=.1]; \n");
-        fprintf(graficar, "node[ width=1.5 ]; \n");
+
+        fprintf(graficar, "subgraph cluster_1 { \n");
+        fprintf(graficar, "node [shape = square] color = orange style=filled; \n");
+        fprintf(graficar, "label=\" Pasajeros en Espera \"; \n");
 
         if(First != nullptr)
         {
@@ -119,7 +128,7 @@ public:
                 int Maletas = aux->getMaletas();
                 int Documentos = aux->getDocumentos();
                 int Registro = aux->getRegistro();
-                fprintf(graficar,"nd%p\ [label = \"{<a> |  Pasajero Id: %d\ \\n Maletas : %d\ \\n Documentos: %d\  \\n  Registro: %d\ Turnos | <b> }\" ];\n",aux,Id,Maletas,Documentos,Registro);
+                fprintf(graficar,"nd%p\ [label = \"Pasajero Id: %d\ \\n Maletas : %d\ \\n Documentos: %d\  \\n  Registro: %d\ Turnos\" ];\n",aux,Id,Maletas,Documentos,Registro);
                 aux = aux->Next;
             }
 
@@ -152,23 +161,33 @@ public:
     }
     int getId()
     {
-        return First->getId();
+        NodoColaPasajeros *aux = First;
+        return aux->getId();
     }
     int getMaletas()
     {
-        return First->getMaletas();
+        NodoColaPasajeros *aux = First;
+        return aux->getMaletas();
     }
     int getDocumentos()
     {
-        return First->getDocumentos();
+        NodoColaPasajeros *aux = First;
+        return aux->getDocumentos();
     }
     int getRegistro()
     {
-        return First->getRegistro();
+        NodoColaPasajeros *aux = First;
+        return aux->getRegistro();
     }
     void setRegistro(int Registro)
     {
-        First->setRegistro(Registro);
+        NodoColaPasajeros *aux = First;
+        return aux->setRegistro(Registro);
+    }
+    void delall()
+    {
+        First = Last = nullptr;
+        size = 0;
     }
 };
 

@@ -1,0 +1,5 @@
+subgraph cluster_0 { 
+node [shape = square] color = orange style=filled; 
+label=" Llegada De Aviones "; 
+nd0x1306160 [label = "Tipo: Pequeño \n Pasajeros : 7 \n Desabordaje: 1 Turnos \n  Mantenimiento: 2 Turnos " ];
+} 

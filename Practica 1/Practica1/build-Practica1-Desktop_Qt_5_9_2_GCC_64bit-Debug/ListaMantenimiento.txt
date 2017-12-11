@@ -1,0 +1,11 @@
+subgraph cluster_4 { 
+node [shape = square] color = orange style=filled; 
+label=" Estacion de Mantenimiento "; 
+nd0x148f2b0 [label = "Tipo: Libre \n Estado: Libre \n  Mantenimiento: 0 Turnos  " ];
+nd0x12ee870 [label = "Tipo: Libre \n Estado: Libre \n  Mantenimiento: 0 Turnos  " ];
+nd0x12ef5f0 [label = "Tipo: Libre \n Estado: Libre \n  Mantenimiento: 0 Turnos  " ];
+nd0x1322fb0 [label = "Tipo: Libre \n Estado: Libre \n  Mantenimiento: 0 Turnos  " ];
+nd0x148f2b0 -> nd0x12ee870 [ penwidth = 2 fontsize = 15 fontcolor = "black" label = "Next" ];
+nd0x12ee870 -> nd0x12ef5f0 [ penwidth = 2 fontsize = 15 fontcolor = "black" label = "Next" ];
+nd0x12ef5f0 -> nd0x1322fb0 [ penwidth = 2 fontsize = 15 fontcolor = "black" label = "Next" ];
+} 

@@ -1,0 +1,5 @@
+subgraph cluster_5 { {rank=min; 
+node [shape = square] color = orange style=filled; 
+label=" Estacion de Escritorios "; 
+ ListaDobleOrdenadaEscritorioNada[label = " Escritorios Vacios " ];
+} 

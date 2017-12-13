@@ -123,6 +123,8 @@ public:
     }
     void delall(){
         First = Last = nullptr;
+        delete First;
+        delete Last;
         size = 0;
     }
     string gListaAvion(){

@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_MainWindow_t {
-    QByteArrayData data[21];
-    char stringdata0[367];
+    QByteArrayData data[25];
+    char stringdata0[446];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -50,8 +50,12 @@ QT_MOC_LITERAL(15, 271, 13), // "Maletasllenar"
 QT_MOC_LITERAL(16, 285, 9), // "noMaletas"
 QT_MOC_LITERAL(17, 295, 17), // "GrafolistaMaletas"
 QT_MOC_LITERAL(18, 313, 19), // "AvionEstacionllenar"
-QT_MOC_LITERAL(19, 333, 11), // "Escritorios"
-QT_MOC_LITERAL(20, 345, 21) // "GrafoEstacionServicio"
+QT_MOC_LITERAL(19, 333, 13), // "Mantenimiento"
+QT_MOC_LITERAL(20, 347, 21), // "GrafoEstacionServicio"
+QT_MOC_LITERAL(21, 369, 17), // "EscritoriosLLenar"
+QT_MOC_LITERAL(22, 387, 11), // "Escritorios"
+QT_MOC_LITERAL(23, 399, 24), // "GrafoEstacionEscritorios"
+QT_MOC_LITERAL(24, 424, 21) // "llenarcolaEscritorios"
 
     },
     "MainWindow\0on_pushButton_clicked\0\0"
@@ -62,8 +66,10 @@ QT_MOC_LITERAL(20, 345, 21) // "GrafoEstacionServicio"
     "GrafoColaPasajeros\0AvionMantenimientollenar\0"
     "GrafoColaAvion\0AvionMantenimientodel\0"
     "Maletasllenar\0noMaletas\0GrafolistaMaletas\0"
-    "AvionEstacionllenar\0Escritorios\0"
-    "GrafoEstacionServicio"
+    "AvionEstacionllenar\0Mantenimiento\0"
+    "GrafoEstacionServicio\0EscritoriosLLenar\0"
+    "Escritorios\0GrafoEstacionEscritorios\0"
+    "llenarcolaEscritorios"
 };
 #undef QT_MOC_LITERAL
 
@@ -73,7 +79,7 @@ static const uint qt_meta_data_MainWindow[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-      16,   14, // methods
+      19,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -81,22 +87,25 @@ static const uint qt_meta_data_MainWindow[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    0,   94,    2, 0x08 /* Private */,
-       3,    0,   95,    2, 0x08 /* Private */,
-       4,    0,   96,    2, 0x08 /* Private */,
-       5,    0,   97,    2, 0x08 /* Private */,
-       6,    0,   98,    2, 0x08 /* Private */,
-       7,    0,   99,    2, 0x08 /* Private */,
-       8,    0,  100,    2, 0x08 /* Private */,
-      10,    0,  101,    2, 0x08 /* Private */,
-      11,    0,  102,    2, 0x08 /* Private */,
-      12,    0,  103,    2, 0x08 /* Private */,
-      13,    0,  104,    2, 0x08 /* Private */,
-      14,    0,  105,    2, 0x08 /* Private */,
-      15,    1,  106,    2, 0x08 /* Private */,
-      17,    0,  109,    2, 0x08 /* Private */,
-      18,    1,  110,    2, 0x08 /* Private */,
-      20,    0,  113,    2, 0x08 /* Private */,
+       1,    0,  109,    2, 0x08 /* Private */,
+       3,    0,  110,    2, 0x08 /* Private */,
+       4,    0,  111,    2, 0x08 /* Private */,
+       5,    0,  112,    2, 0x08 /* Private */,
+       6,    0,  113,    2, 0x08 /* Private */,
+       7,    0,  114,    2, 0x08 /* Private */,
+       8,    0,  115,    2, 0x08 /* Private */,
+      10,    0,  116,    2, 0x08 /* Private */,
+      11,    0,  117,    2, 0x08 /* Private */,
+      12,    0,  118,    2, 0x08 /* Private */,
+      13,    0,  119,    2, 0x08 /* Private */,
+      14,    0,  120,    2, 0x08 /* Private */,
+      15,    1,  121,    2, 0x08 /* Private */,
+      17,    0,  124,    2, 0x08 /* Private */,
+      18,    1,  125,    2, 0x08 /* Private */,
+      20,    0,  128,    2, 0x08 /* Private */,
+      21,    1,  129,    2, 0x08 /* Private */,
+      23,    0,  132,    2, 0x08 /* Private */,
+      24,    0,  133,    2, 0x08 /* Private */,
 
  // slots: parameters
     QMetaType::Void,
@@ -115,6 +124,9 @@ static const uint qt_meta_data_MainWindow[] = {
     0x80000000 | 9,
     QMetaType::Void, QMetaType::Int,   19,
     0x80000000 | 9,
+    QMetaType::Void, QMetaType::Int,   22,
+    0x80000000 | 9,
+    QMetaType::Void,
 
        0        // eod
 };
@@ -146,6 +158,10 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 14: _t->AvionEstacionllenar((*reinterpret_cast< int(*)>(_a[1]))); break;
         case 15: { string _r = _t->GrafoEstacionServicio();
             if (_a[0]) *reinterpret_cast< string*>(_a[0]) = std::move(_r); }  break;
+        case 16: _t->EscritoriosLLenar((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 17: { string _r = _t->GrafoEstacionEscritorios();
+            if (_a[0]) *reinterpret_cast< string*>(_a[0]) = std::move(_r); }  break;
+        case 18: _t->llenarcolaEscritorios(); break;
         default: ;
         }
     }
@@ -176,13 +192,13 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 16)
+        if (_id < 19)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 16;
+        _id -= 19;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 16)
+        if (_id < 19)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 16;
+        _id -= 19;
     }
     return _id;
 }

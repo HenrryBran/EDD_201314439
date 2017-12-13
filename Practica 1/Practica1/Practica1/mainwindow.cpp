@@ -1,6 +1,10 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "QMessageBox"
+#include "iostream"
+#include "string"
+
+using namespace std;
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -23,6 +27,7 @@ MainWindow::MainWindow(QWidget *parent) :
     Equipaje = new ListaDobleCircularEquipaje();
     Avion_l = new ListaMantenimiento();
     scrollArea = new QScrollArea();
+    Escritorios_l = new ListaDobleOrdenadaEscritorio();
 
     EnUso = false;
     primer = true;
@@ -32,6 +37,7 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
+
 void MainWindow::MostrarGrafo()
 {
     QPixmap pix("Todo.png");
@@ -61,6 +67,7 @@ void MainWindow::on_pushButton_clicked()
             EnUso = true;
             primer = false;
             AvionEstacionllenar(Mantenimiento);
+            EscritoriosLLenar(Escritorios);
             QMessageBox::information(this, "Inicio de simulacion", "Datos aceptados se comenzara la simulacion");
         }
         else
@@ -96,6 +103,8 @@ void MainWindow::on_pushButton_2_clicked()
             MostrarGrafo();
             Turnos--;
             Avion_l->editListaMantenimientoTurnos();
+            //Escritorios_l->entrarventanilla();
+            //Escritorios_l->quitarturnos();
             contadorturnos++;
         }
         else
@@ -108,6 +117,7 @@ void MainWindow::on_pushButton_2_clicked()
             Pasajeros_e->delall();
             Equipaje->delall();
             Avion_l->delall();
+            Escritorios_l->delall();
         }
     }
 
@@ -124,6 +134,7 @@ void MainWindow::GraficarTodo()
     fprintf(graficar," %s\ \n",GrafoColaAvion().data());
     fprintf(graficar," %s\ \n",GrafolistaMaletas().data());
     fprintf(graficar," %s\ \n",GrafoEstacionServicio().data());
+    fprintf(graficar," %s\ \n",GrafoEstacionEscritorios().data());
     fprintf(graficar, "} \n");
     fclose(graficar);
     system("dot -Tpng Todo.dot > Todo.png");
@@ -171,10 +182,11 @@ void MainWindow::AvionQuitarTurnos_llenarColaEspera_llenarColaPasajeros()
         int Desabordaje = Avion_d->getDesbordaje();
         if(Desabordaje <= 1 )
         {
-            Pasajerosllenar();
+            Pasajerosllenar();            
             AvionMantenimientollenar();
             Avion_d->delColaDobleAvion();            
             AvionMantenimientodel();
+            //llenarcolaEscritorios();
         }
         else
         {
@@ -258,9 +270,9 @@ string MainWindow::GrafolistaMaletas()
 }
 
 //Lista Simple de Mantenimiento de Aviones
-void MainWindow::AvionEstacionllenar(int Escritorios)
+void MainWindow::AvionEstacionllenar(int Mantenimiento)
 {
-   for(int i = 0; i<Escritorios;i++)
+   for(int i = 0; i<Mantenimiento;i++)
    {
        Avion_l->addListaMantenimiento(new NodoMantemiento(555,false,0));
    }
@@ -271,3 +283,37 @@ string MainWindow::GrafoEstacionServicio()
     return Avion_l->gListaAvion();
 }
 
+//Lista Doble de Escritorios
+void MainWindow::EscritoriosLLenar(int Escritorios)
+{
+    char Letra= 'A';
+    for(int i=0; i< Escritorios;i++)
+    {
+        cout<<Letra<<endl;
+        string letra(1,Letra);
+        ColaPasajerosEscritorio* Escritorios_C = new ColaPasajerosEscritorio();
+        PilaDocumentosEscritorio* Escritorios_P = new PilaDocumentosEscritorio();
+        Escritorios_l->addListaDobleOrdenadaEscritorio(new NodoEscritorio(Escritorios_P,Escritorios_C,letra,0,false,0,0,0));
+        Letra++;
+        Escritorios_l->ordenar();
+    }
+}
+
+string MainWindow::GrafoEstacionEscritorios()
+{
+    return Escritorios_l->gListaDobleOrdenadaEscritorio();
+}
+
+void MainWindow::llenarcolaEscritorios()
+{
+    if(!Pasajeros_e->estaVacia())
+    {
+        int Id =  Pasajeros_e->getId();
+        int Documentos = Pasajeros_e->getDocumentos();
+        int Maletas =  Pasajeros_e->getMaletas();
+        int Registro = Pasajeros_e->getRegistro();
+        Escritorios_l->llenarcola(new NodoColaPasajerosEscritorio(Id,Maletas,Documentos,Registro));
+        Pasajeros_e->delColaPasajeros();
+        llenarcolaEscritorios();
+    }
+}

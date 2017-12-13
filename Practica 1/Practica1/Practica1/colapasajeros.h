@@ -99,13 +99,15 @@ public:
                 aux = First->Next;
                 First->Next = nullptr;
                 First = nullptr;
+                delete First;
                 First = aux;
                 size--;
             }
             else
             {
-                First = nullptr;
-                Last = nullptr;
+                First = Last = nullptr;
+                delete First;
+                delete Last;
                 size = 0;
             }
         }
@@ -187,6 +189,8 @@ public:
     void delall()
     {
         First = Last = nullptr;
+        delete First;
+        delete Last;
         size = 0;
     }
 };

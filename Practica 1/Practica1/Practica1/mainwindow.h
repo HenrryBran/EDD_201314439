@@ -10,6 +10,7 @@
 #include "colamantenimiento.h"
 #include "listadoblecircularequipaje.h"
 #include "listamantenimiento.h"
+#include "listadobleordenadaescritorio.h"
 
 namespace Ui {
 class MainWindow;
@@ -50,9 +51,14 @@ private slots:
     void Maletasllenar(int noMaletas);
     string GrafolistaMaletas();
 
-    //Lista simple Escritorios
-    void AvionEstacionllenar(int Escritorios);
+    //Lista simple Mantenimiento
+    void AvionEstacionllenar(int Mantenimiento);
     string GrafoEstacionServicio();
+
+    //lista doble Escritorios
+    void EscritoriosLLenar(int Escritorios);
+    string GrafoEstacionEscritorios();
+    void llenarcolaEscritorios();
 
 
 private:
@@ -76,6 +82,7 @@ private:
     ColaMantenimiento *Avion_m;
     ListaDobleCircularEquipaje *Equipaje;
     ListaMantenimiento* Avion_l;
+    ListaDobleOrdenadaEscritorio* Escritorios_l;
 
 };
 

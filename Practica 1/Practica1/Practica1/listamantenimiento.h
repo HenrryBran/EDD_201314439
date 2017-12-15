@@ -8,18 +8,16 @@ using namespace std;
 struct NodoMantemiento
 {
 private:
-
     int Tipo;
+    int Id;
     bool Estado;
     int Mantenimiento;
-
 public:
-
     NodoMantemiento* Next;
-
-    NodoMantemiento(int Tipo,bool Estado,int Mantenimiento)
+    NodoMantemiento(int Tipo,int Id,bool Estado,int Mantenimiento)
     {
         this->Tipo = Tipo;
+        this->Id = Id;
         this->Estado = Estado;
         this->Mantenimiento = Mantenimiento;
         Next = nullptr;
@@ -40,6 +38,14 @@ public:
     {
         return this->Tipo;
     }
+    int getId()
+    {
+        return this->Id;
+    }
+    void setId(int Id)
+    {
+        this->Id = Id;
+    }
     void setEstado(bool Estado)
     {
         this->Estado = Estado;
@@ -53,13 +59,10 @@ public:
 struct ListaMantenimiento
 {
 private:
-
     NodoMantemiento* First;
     NodoMantemiento* Last;
     int size;
-
 public:
-
     ListaMantenimiento() {
         First = nullptr;
         Last = nullptr;
@@ -141,18 +144,19 @@ public:
             NodoMantemiento *aux = First;
             while(aux != nullptr){
                 int Tipo = aux->getTipo();
+                int Id = aux->getId();
                 int Mantenimiento = aux->getMantenimiento();
                 if (Tipo == 0) {
-                    fprintf(graficar,"nd%p\ [label = \"Tipo: Pequeño \\n Estado : Ocupado \\n  Mantenimiento: %d\ Turnos \" ];\n",aux,Mantenimiento);
+                    fprintf(graficar,"nd%p\ [label = \"Estacion : %d\ \\n Tipo: Pequeño \\n Estado : Ocupado \\n  Mantenimiento: %d\ Turnos \" ];\n",aux,Id,Mantenimiento);
                 }
                 else if(Tipo == 1){
-                    fprintf(graficar,"nd%p\ [label = \"Tipo: Mediano \\n Estado: Ocupado \\n  Mantenimiento: %d\ Turnos \" ];\n",aux,Mantenimiento);
+                    fprintf(graficar,"nd%p\ [label = \"Estacion : %d\ \\n Tipo: Mediano \\n Estado: Ocupado \\n  Mantenimiento: %d\ Turnos \" ];\n",aux,Id,Mantenimiento);
                 }
                 else if(Tipo == 2){
-                    fprintf(graficar,"nd%p\ [label = \"Tipo: Grande \\n Estado: Ocupado \\n  Mantenimiento: %d\ Turnos  \" ];\n",aux,Mantenimiento);
+                    fprintf(graficar,"nd%p\ [label = \"Estacion : %d\ \\n Tipo: Grande \\n Estado: Ocupado \\n  Mantenimiento: %d\ Turnos  \" ];\n",aux,Id,Mantenimiento);
                 }
                 else{
-                    fprintf(graficar,"nd%p\ [label = \"Tipo: Libre \\n Estado: Libre \\n  Mantenimiento: 0 Turnos  \" ];\n",aux);
+                    fprintf(graficar,"nd%p\ [label = \"Estacion : %d\ \\n Tipo: Libre \\n Estado: Libre \\n  Mantenimiento: 0 Turnos  \" ];\n",aux,Id);
                 }
                 aux = aux->Next;
             }
@@ -186,6 +190,45 @@ public:
     }
     int getsize(){
         return size;
+    }
+    string consola()
+    {
+        string consola = "\n++++++++++++Estacion de servicio+++++++++++++\n";
+        if(First != nullptr)
+        {
+            NodoMantemiento *aux = First;
+            while(aux != nullptr){
+                int Tipo = aux->getTipo();
+                int Id = aux->getId();
+                int Mantenimiento = aux->getMantenimiento();
+                if (Tipo == 0) {
+                    consola = consola + "Estacion " + to_string(Id) + ": Ocupada \n ";
+                    consola = consola + "\t Avion en Mantenimiento: Pequeño \n" ;
+                    consola = consola + "\t Turnos restantes: " + to_string(Mantenimiento) + "\n";
+                }
+                else if(Tipo == 1){
+                    consola = consola + "Estacion " + to_string(Id) + ": Ocupada \n ";
+                    consola = consola + "\t Avion en Mantenimiento: Mediano \n" ;
+                    consola = consola + "\t Turnos restantes: " + to_string(Mantenimiento) + "\n";
+                }
+                else if(Tipo == 2){
+                    consola = consola + "Estacion " + to_string(Id) + ": Ocupada \n ";
+                    consola = consola + "\t Avion en Mantenimiento: Grande \n" ;
+                    consola = consola + "\t Turnos restantes: " + to_string(Mantenimiento) + "\n";
+                }
+                else{
+                    consola = consola + "Estacion " + to_string(Id) + ": Libre\n ";
+                    consola = consola + "\t Avion en Mantenimiento: ninguno \n";
+                    consola = consola + "\t Turnos restantes: 0 \n";
+                }
+                aux = aux->Next;
+            }
+            consola = consola + "+++++++++++++++++++++++++++++++++++++++++++++\n";
+            return consola;
+
+        }
+        consola = consola +  "Vacio \n";
+        return consola;
     }
 
 };

@@ -74,14 +74,25 @@ public:
     {
         if(First != nullptr)
         {
-            NodoListaDobleCircularEquipaje *aux;
-            aux = First->Next;
-            First->Next=nullptr;
-            First->Prev = nullptr;
-            aux->Prev = Last;
-            Last->Next=aux;
-            First = aux;
-            size--;
+            if(First != Last)
+            {
+                NodoListaDobleCircularEquipaje *aux;
+                aux = First->Next;
+                First = nullptr;
+                delete First;
+                aux->Prev = Last;
+                Last->Next=aux;
+                First = aux;
+                size--;
+            }
+            else
+            {
+                First = Last = nullptr;
+                delete First;
+                delete Last;
+                size--;
+            }
+
         }
         return;
     }

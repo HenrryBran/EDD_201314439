@@ -32,6 +32,8 @@ private slots:
     //Metodos y funciones globales
     void GraficarTodo();
     void MostrarGrafo();
+    void consola();
+    void GraficarTodo2();
 
     //Desabordaje avion
     void Avionllenar();
@@ -65,15 +67,19 @@ private:
     Ui::MainWindow *ui;
 
     //Variables globales de estado
-    int Turnos;
-    int Aviones;
-    int Escritorios;
-    int Mantenimiento;
-    int contadorturnos;
-    bool primer;
-    bool EnUso;
-    int ContPasajeros;
-    int idMaletas;
+    int Turnos;//numero de turnos
+    int Aviones;//numero de aviones
+    int Escritorios;//numero de escritorios
+    int Mantenimiento;//numero de espacios de servicio
+
+    int contadorturnos; // llevar contador de turnos
+
+    bool EnUso;//verifica si la simulacion esta en uso
+
+    int ContPasajeros;//id de pasajeros
+    int idMaletas;//id de maletas
+
+    int Turnos_2;//auxiliar de turnos
 
     //instancias de las estructuras
     QScrollArea *scrollArea;

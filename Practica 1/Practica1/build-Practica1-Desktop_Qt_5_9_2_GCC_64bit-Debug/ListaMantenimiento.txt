@@ -1,23 +1,5 @@
 subgraph cluster_4 { 
 node [shape = square] color = orange style=filled; 
 label=" Estacion de Mantenimiento "; 
-nd0xcfff70 [label = "Tipo: Libre \n Estado: Libre \n  Mantenimiento: 0 Turnos  " ];
-nd0xe89590 [label = "Tipo: Libre \n Estado: Libre \n  Mantenimiento: 0 Turnos  " ];
-nd0xc5be60 [label = "Tipo: Libre \n Estado: Libre \n  Mantenimiento: 0 Turnos  " ];
-nd0xe92d90 [label = "Tipo: Libre \n Estado: Libre \n  Mantenimiento: 0 Turnos  " ];
-nd0xeaedf0 [label = "Tipo: Libre \n Estado: Libre \n  Mantenimiento: 0 Turnos  " ];
-nd0xeb3c60 [label = "Tipo: Libre \n Estado: Libre \n  Mantenimiento: 0 Turnos  " ];
-nd0xeb5740 [label = "Tipo: Libre \n Estado: Libre \n  Mantenimiento: 0 Turnos  " ];
-nd0xca5640 [label = "Tipo: Libre \n Estado: Libre \n  Mantenimiento: 0 Turnos  " ];
-nd0xca5660 [label = "Tipo: Libre \n Estado: Libre \n  Mantenimiento: 0 Turnos  " ];
-nd0xeb0320 [label = "Tipo: Libre \n Estado: Libre \n  Mantenimiento: 0 Turnos  " ];
-nd0xcfff70 -> nd0xe89590 [ penwidth = 2 fontsize = 15 fontcolor = "black" label = "Next" ];
-nd0xe89590 -> nd0xc5be60 [ penwidth = 2 fontsize = 15 fontcolor = "black" label = "Next" ];
-nd0xc5be60 -> nd0xe92d90 [ penwidth = 2 fontsize = 15 fontcolor = "black" label = "Next" ];
-nd0xe92d90 -> nd0xeaedf0 [ penwidth = 2 fontsize = 15 fontcolor = "black" label = "Next" ];
-nd0xeaedf0 -> nd0xeb3c60 [ penwidth = 2 fontsize = 15 fontcolor = "black" label = "Next" ];
-nd0xeb3c60 -> nd0xeb5740 [ penwidth = 2 fontsize = 15 fontcolor = "black" label = "Next" ];
-nd0xeb5740 -> nd0xca5640 [ penwidth = 2 fontsize = 15 fontcolor = "black" label = "Next" ];
-nd0xca5640 -> nd0xca5660 [ penwidth = 2 fontsize = 15 fontcolor = "black" label = "Next" ];
-nd0xca5660 -> nd0xeb0320 [ penwidth = 2 fontsize = 15 fontcolor = "black" label = "Next" ];
+nd0x172b9d0 [label = "Estacion : 0 \n Tipo: Mediano \n Estado: Ocupado \n  Mantenimiento: 2 Turnos " ];
 } 

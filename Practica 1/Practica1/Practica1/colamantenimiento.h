@@ -163,6 +163,7 @@ public:
         delete Last;
         size = 0;
     }
+
 };
 
 #endif // COLAMANTENIMIENTO_H

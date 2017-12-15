@@ -17,9 +17,9 @@ MainWindow::MainWindow(QWidget *parent) :
     Aviones = 0;
     Escritorios = 0;
     Mantenimiento = 0;
-    contadorturnos = 2;
+    contadorturnos = 0;
     ContPasajeros = 0;
-    idMaletas = 1;
+    idMaletas = 0;
 
     Avion_d = new ColaDobleAvion();
     Pasajeros_e = new ColaPasajeros();
@@ -30,7 +30,7 @@ MainWindow::MainWindow(QWidget *parent) :
     Escritorios_l = new ListaDobleOrdenadaEscritorio();
 
     EnUso = false;
-    primer = true;
+
 }
 
 MainWindow::~MainWindow()
@@ -46,6 +46,7 @@ void MainWindow::MostrarGrafo()
     scrollArea->setWidget(ui->label_5);
     scrollArea->setVisible(true);
     scrollArea->setWidgetResizable(this);
+    scrollArea->show();
 }
 
 void MainWindow::on_pushButton_clicked()
@@ -59,15 +60,19 @@ void MainWindow::on_pushButton_clicked()
         int v4 = ui->lineEdit_4->text().toInt(&check4);
         if(check1 == true && check2 == true && check3 == true && check4 == true && v1 >= 1 && v2 >= 1 && v3 >= 1 && v4 >= 1)
         {
-            Turnos = v1 - 1;
+            Turnos = v1;
+            Turnos_2 = v1;
             Aviones = v2;
             Escritorios = v3;
             Mantenimiento = v4;
-            contadorturnos = 2;
+            contadorturnos = 1;
             EnUso = true;
-            primer = false;
+            //se llenan las estaciones de servicio de aviones
             AvionEstacionllenar(Mantenimiento);
+            //se llenan las estaciones de escritorios
             EscritoriosLLenar(Escritorios);
+            GraficarTodo();//graficamos
+            MostrarGrafo();
             QMessageBox::information(this, "Inicio de simulacion", "Datos aceptados se comenzara la simulacion");
         }
         else
@@ -83,44 +88,104 @@ void MainWindow::on_pushButton_clicked()
 
 void MainWindow::on_pushButton_2_clicked()
 {
-    if(primer == false)
+    if(Turnos > 0 && EnUso == true)
     {
-        Avionllenar();
-        GraficarTodo();
-        MostrarGrafo();
-        primer = true;
-        QMessageBox::information(this, "Siguiente turno","Turno 1");
-    }
-    else
-    {
-        if(Turnos > 0 )
+        if(contadorturnos == 1)
         {
-            Avionllenar();
-            AvionQuitarTurnos_llenarColaEspera_llenarColaPasajeros();
             QString dato = QString::number(contadorturnos);
-            QMessageBox::information(this, "Siguiente turno","Turno " + dato);
-            GraficarTodo();
-            MostrarGrafo();
-            Turnos--;
+            QMessageBox::information(this, "Inicio de Turno","Turno " + dato);
+
+            //llena los datos de avion con pasajeros,tipo,turnos,mantenimiento
+            Avionllenar();
+
+            //se miran los datos si es mayor el desabordaje solo quita si no
+            //llena la cola de pasajeros en espera y llena la cola de aviones en espera
+            //se llena la lista doble enlazada de las maletas tambien
+            AvionQuitarTurnos_llenarColaEspera_llenarColaPasajeros();
+
+            //se llena solo las colas de los escritorios
+            llenarcolaEscritorios();
+
+            //elimina turnos en la lista de mantenimiento en la de servicio
             Avion_l->editListaMantenimientoTurnos();
-            //Escritorios_l->entrarventanilla();
-            //Escritorios_l->quitarturnos();
+
+            //se llena la ventanilla con los datos del primero de la cola y se llena la pila de documentos
+            Escritorios_l->entrarventanilla();
+
             contadorturnos++;
+            Turnos--;
+
+            GraficarTodo();//graficamos
+            consola();//mostramos consola
+            MostrarGrafo();
+
+            QMessageBox::information(this, "Finalizo el Turno","Turno " + dato);
+
         }
         else
         {
-            QMessageBox::information(this, "Simulacion Terminada", "La simulacion llego a su fin de turnos");
-            EnUso = false;
-            primer = false;            
-            Avion_d->delall();
-            Avion_m->delall();
-            Pasajeros_e->delall();
-            Equipaje->delall();
-            Avion_l->delall();
-            Escritorios_l->delall();
-        }
-    }
+            QString dato = QString::number(contadorturnos);
+            QMessageBox::information(this, "Inicio de Turno","Turno " + dato);
 
+            //llena los datos de avion con pasajeros,tipo,turnos,mantenimiento
+            Avionllenar();
+
+            //se miran los datos si es mayor el desabordaje solo quita si no
+            //llena la cola de pasajeros en espera y llena la cola de aviones en espera
+            //se llena la lista doble enlazada de las maletas tambien
+            AvionQuitarTurnos_llenarColaEspera_llenarColaPasajeros();
+
+            //se llena solo las colas de los escritorios
+            llenarcolaEscritorios();
+
+            //elimina turnos en la lista de mantenimiento en la de servicio
+            Avion_l->editListaMantenimientoTurnos();
+
+            //se llena la ventanilla con los datos del primero de la cola y se llena la pila de documentos
+            Escritorios_l->entrarventanilla();
+
+
+            GraficarTodo2();
+            //Aqui recibimos un acumulador de cuantas maletas hay que quitar y tambien se quitan lo que son
+            //las personas en las ventanillas
+            int quitar = Escritorios_l->quitarturnos();
+            if(quitar != 0)
+            {
+                for(int i = 0; i < quitar ; i++)
+                {
+                    Equipaje->delListaDobleCircularEquipaje();
+                }
+            }
+
+            //se elimina el avion de la cola de espera
+            AvionMantenimientodel();
+
+            contadorturnos++;
+            Turnos--;
+
+            GraficarTodo();//graficamos
+            consola();//mostramos consola
+            MostrarGrafo();
+
+            QMessageBox::information(this, "Finalizo el Turno","Turno " + dato);
+
+        }
+
+    }
+    else
+    {
+        QMessageBox::information(this, "Simulacion Terminada", "La simulacion llego a su fin de turnos");
+        EnUso = false;
+        Avion_d->delall();
+        Avion_m->delall();
+        Pasajeros_e->delall();
+        Equipaje->delall();
+        Avion_l->delall();
+        Escritorios_l->delall();
+        ui->textEdit->setText("");
+        ContPasajeros = 0;
+        idMaletas = 0;
+    }
 }
 
 void MainWindow::GraficarTodo()
@@ -139,6 +204,24 @@ void MainWindow::GraficarTodo()
     fclose(graficar);
     system("dot -Tpng Todo.dot > Todo.png");
     //system("gnome-open Todo.png");
+}
+
+void MainWindow::GraficarTodo2()
+{
+    FILE *graficar;
+     graficar = fopen("Todo2.dot", "w+");
+    fprintf(graficar, "digraph { \n");
+    fprintf(graficar, "nodesep = .90; \n");
+    fprintf(graficar," %s\ \n",GrafoDobleAvion().data());
+    fprintf(graficar," %s\ \n",GrafoColaPasajeros().data());
+    fprintf(graficar," %s\ \n",GrafoColaAvion().data());
+    fprintf(graficar," %s\ \n",GrafolistaMaletas().data());
+    fprintf(graficar," %s\ \n",GrafoEstacionServicio().data());
+    fprintf(graficar," %s\ \n",GrafoEstacionEscritorios().data());
+    fprintf(graficar, "} \n");
+    fclose(graficar);
+    system("dot -Tpng Todo2.dot > Todo2.png");
+    system("gnome-open Todo.png");
 }
 
 //Automatico Desabordaje de Aviones
@@ -182,11 +265,9 @@ void MainWindow::AvionQuitarTurnos_llenarColaEspera_llenarColaPasajeros()
         int Desabordaje = Avion_d->getDesbordaje();
         if(Desabordaje <= 1 )
         {
-            Pasajerosllenar();            
+            Pasajerosllenar();
             AvionMantenimientollenar();
-            Avion_d->delColaDobleAvion();            
-            AvionMantenimientodel();
-            //llenarcolaEscritorios();
+            Avion_d->delColaDobleAvion();                       
         }
         else
         {
@@ -228,6 +309,7 @@ string MainWindow::GrafoColaPasajeros()
 //Automatico Mantenimiendo de Aviones
 void MainWindow::AvionMantenimientollenar()
 {
+
     int Tipo = Avion_d->getTipo();
     int Mantenimiento = Avion_d->getMantenimiento();
     Avion_m->addColaMantenimiento(new NodoColaMantenimiento(Tipo,Mantenimiento));
@@ -274,7 +356,7 @@ void MainWindow::AvionEstacionllenar(int Mantenimiento)
 {
    for(int i = 0; i<Mantenimiento;i++)
    {
-       Avion_l->addListaMantenimiento(new NodoMantemiento(555,false,0));
+       Avion_l->addListaMantenimiento(new NodoMantemiento(555,i,false,0));
    }
 }
 
@@ -289,7 +371,6 @@ void MainWindow::EscritoriosLLenar(int Escritorios)
     char Letra= 'A';
     for(int i=0; i< Escritorios;i++)
     {
-        cout<<Letra<<endl;
         string letra(1,Letra);
         ColaPasajerosEscritorio* Escritorios_C = new ColaPasajerosEscritorio();
         PilaDocumentosEscritorio* Escritorios_P = new PilaDocumentosEscritorio();
@@ -308,12 +389,37 @@ void MainWindow::llenarcolaEscritorios()
 {
     if(!Pasajeros_e->estaVacia())
     {
-        int Id =  Pasajeros_e->getId();
-        int Documentos = Pasajeros_e->getDocumentos();
-        int Maletas =  Pasajeros_e->getMaletas();
-        int Registro = Pasajeros_e->getRegistro();
-        Escritorios_l->llenarcola(new NodoColaPasajerosEscritorio(Id,Maletas,Documentos,Registro));
-        Pasajeros_e->delColaPasajeros();
-        llenarcolaEscritorios();
+        if(Escritorios_l->colallena() == true )
+        {
+            return;
+        }
+        else
+        {
+            int Id =  Pasajeros_e->getId();
+            int Documentos = Pasajeros_e->getDocumentos();
+            int Maletas =  Pasajeros_e->getMaletas();
+            int Registro = Pasajeros_e->getRegistro();
+            Escritorios_l->llenarcola(new NodoColaPasajerosEscritorio(Id,Maletas,Documentos,Registro));
+            Pasajeros_e->delColaPasajeros();
+            llenarcolaEscritorios();
+        }
     }
+    return;
+}
+
+//Consola
+void MainWindow::consola()
+{
+    int resultado = Turnos_2 - Turnos;
+    string acumulador = "    ******************** Turno " + to_string(resultado) + "******************* \n\n";
+    acumulador = acumulador + Avion_d->consola();
+    acumulador = acumulador + Escritorios_l->consola();
+    acumulador = acumulador + Avion_l->consola();
+    acumulador = acumulador + "Cantidad de maletas actualmente en el sistema: " + to_string(Equipaje->getsize()) + "\n";
+    acumulador = acumulador + "Turnos restantes: " + to_string(Turnos) + "\n";
+    acumulador = acumulador + "    ************* Fin de Turno " + to_string(resultado) + " ********** \n\n";
+    QString salida = QString::fromStdString(acumulador);
+    QString txt = ui->textEdit->toPlainText();
+    QString setsalida = txt + salida;
+    ui->textEdit->setText(setsalida);
 }

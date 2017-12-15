@@ -9,14 +9,11 @@ using namespace std;
 struct NodoColaDobleAvion
 {
 private:
-
     int Tipo;
     int Pasajeros;
     int Desbordaje;
     int Mantenimiento;
-
 public:
-
     NodoColaDobleAvion* Next;
     NodoColaDobleAvion* Prev;
 
@@ -61,14 +58,11 @@ public:
 
 struct ColaDobleAvion
 {
-private:
-
+private:    
+    int size;
+public:
     NodoColaDobleAvion* First;
     NodoColaDobleAvion* Last;
-    int size;
-
-public:
-
     ColaDobleAvion()
     {
         First = nullptr;
@@ -212,6 +206,47 @@ public:
         delete First;
         delete Last;
         size = 0;
+    }
+    string consola()
+    {
+        NodoColaDobleAvion* aux = Last;
+        string consola = "Arribo Avion Tipo: ";
+        if(aux == nullptr)
+        {
+            consola = consola + "Ninguno \n";
+        }
+        else
+        {
+            int Tipo = aux->getTipo();
+            if (Tipo == 0) {
+                consola = consola + "Pequeño \n";
+            }
+            else if(Tipo == 1){
+                consola = consola + "Mediano \n";
+            }else{
+                consola = consola + "Grande \n";
+            }
+        }
+        aux = First;
+        consola = consola + "Avion desabordando: ";
+        if(aux == nullptr)
+        {
+            consola = consola + "Ninguno \n";
+        }
+        else
+        {
+            int Tipo = aux->getTipo();
+            if (Tipo == 0) {
+                consola = consola + "Pequeño \n";
+            }
+            else if(Tipo == 1){
+                consola = consola + "Mediano \n";
+            }else{
+                consola = consola + "Grande \n";
+            }
+        }
+
+        return consola;
     }
 };
 

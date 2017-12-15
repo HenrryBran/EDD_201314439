@@ -1,0 +1,5 @@
+nd0x1786480 [label = " Pasajero Id: 22 \n Maletas : 3 \n Documentos: 6  \n  Registro: 2 Turnos " ];
+nd0x17864a0 [label = " Pasajero Id: 23 \n Maletas : 4 \n Documentos: 5  \n  Registro: 3 Turnos " ];
+nd0x17864c0 [label = " Pasajero Id: 24 \n Maletas : 4 \n Documentos: 1  \n  Registro: 2 Turnos " ];
+nd0x1786480 -> nd0x17864a0 [ penwidth = 2 fontsize = 15 fontcolor = "black" label = "Next" ];
+nd0x17864a0 -> nd0x17864c0 [ penwidth = 2 fontsize = 15 fontcolor = "black" label = "Next" ];

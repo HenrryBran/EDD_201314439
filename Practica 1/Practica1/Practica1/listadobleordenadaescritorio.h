@@ -9,21 +9,18 @@ using namespace std;
 struct NodoColaPasajerosEscritorio
 {
 private:
-
     int Id;
     int Maletas;
     int Documentos;
-    int Registro;
-
+    int turnos;
 public:
     NodoColaPasajerosEscritorio* Next;
-
-    NodoColaPasajerosEscritorio(int Id,int Maletas,int Documentos,int Registro)
+    NodoColaPasajerosEscritorio(int Id,int Maletas,int Documentos,int turnos)
     {
         this->Id = Id;
         this->Maletas = Maletas;
         this->Documentos = Documentos;
-        this->Registro = Registro;
+        this->turnos = turnos;
         Next = nullptr;
     }
     string geNodoColaPasajerosEscritorio()
@@ -31,15 +28,15 @@ public:
         return to_string(this->Id)
                 + "^" + to_string(this->Maletas)
                 + "^" + to_string(this->Documentos)
-                + "^" + to_string(this->Registro);
+                + "^" + to_string(this->turnos);
     }
-    void setRegistro(int Registro)
+    void setturno(int turnos)
     {
-        this->Registro = Registro;
+        this->turnos = turnos;
     }
-    int getRegistro()
+    int getturno()
     {
-        return this->Registro;
+        return this->turnos;
     }
     int getId()
     {
@@ -58,10 +55,11 @@ public:
 
 struct ColaPasajerosEscritorio
 {
+private:
+    int size;
 public:
     NodoColaPasajerosEscritorio* First;
     NodoColaPasajerosEscritorio* Last;
-    int size;
     ColaPasajerosEscritorio()
     {
         First = nullptr;
@@ -94,6 +92,7 @@ public:
                 aux = First->Next;
                 First->Next = nullptr;
                 First = nullptr;
+                delete First;
                 First = aux;
                 size--;
             }
@@ -117,7 +116,7 @@ public:
                 int Id = aux->getId();
                 int Maletas = aux->getMaletas();
                 int Documentos = aux->getDocumentos();
-                int Registro = aux->getRegistro();
+                int Registro = aux->getturno();
                 fprintf(graficar,"nd%p\ [label = \" Pasajero Id: %d\ \\n Maletas : %d\ \\n Documentos: %d\  \\n  Registro: %d\ Turnos \" ];\n",aux,Id,Maletas,Documentos,Registro);
                 aux = aux->Next;
             }
@@ -157,13 +156,13 @@ public:
     {
         return First->getDocumentos();
     }
-    int getRegistro()
+    int getturnocola()
     {
-        return First->getRegistro();
+        return First->getturno();
     }
-    void setRegistro(int Registro)
+    void setturnocola(int turno)
     {
-        First->setRegistro(Registro);
+        this->First->setturno(turno);
     }
     bool estallena()
     {
@@ -199,12 +198,9 @@ public:
 struct NodoPilaDocumentosEscritorio
 {
 private:
-
     int Documentos;
-
 public:
     NodoPilaDocumentosEscritorio* Next;
-
     NodoPilaDocumentosEscritorio(int Documentos)
     {
         this->Documentos = Documentos;
@@ -223,9 +219,11 @@ public:
 
 struct PilaDocumentosEscritorio
 {
+private:
+    int size;
+public:
     NodoPilaDocumentosEscritorio* First;
     NodoPilaDocumentosEscritorio* Last;
-    int size;
     PilaDocumentosEscritorio()
     {
         First = nullptr;
@@ -248,6 +246,8 @@ struct PilaDocumentosEscritorio
     {
         First = nullptr;
         Last = nullptr;
+        delete First;
+        delete Last;
         size = 0;
     }
     string gPilaDocumentosEscritorio(){
@@ -255,30 +255,22 @@ struct PilaDocumentosEscritorio
         FILE *graficar;
         graficar = fopen("PilaDocumentosEscritorio.txt","w+");
 
-        fprintf(graficar, "subgraph cluster_7{ \n");
-        fprintf(graficar, "node [shape = square] color = orange style=filled; \n");
-        fprintf(graficar, "label=\" Documentos de pasajero\"; \n");
-
         if(First != nullptr)
         {
             NodoPilaDocumentosEscritorio *aux = First;
             while(aux != nullptr){
                 int Documentos = aux->getDocumentos();
-                fprintf(graficar,"nd%p\ [label = \"{<a> | Documento No: %d\ | <b> }\" ];\n",aux,Documentos);
+                fprintf(graficar,"nd%p\ [label = \"Documento No: %d\ \" ];\n",aux,Documentos);
                 aux = aux->Next;
             }
 
             NodoPilaDocumentosEscritorio *aux2 = First;
             while(aux2 != Last){
-                fprintf(graficar,"nd%p\ -> nd%p\ [ penwidth = 2 fontsize = 15 fontcolor = \"black\" label = \"Next\" ];\n",aux2,aux2->Next);
+                fprintf(graficar,"nd%p\ -> nd%p\ [ penwidth = 2 fontsize = 15 fontcolor = \"black\" label = \"\" ];\n",aux2->Next,aux2);
                 aux2 = aux2->Next;
             }
         }
-        else
-        {
-            fprintf(graficar," PilaDocumentosEscritorio[label = \" No Hay Documentos  \" ];\n");
-        }
-        fprintf(graficar, "} \n");
+
         fclose(graficar);
 
         fstream archivo("PilaDocumentosEscritorio.txt");
@@ -290,6 +282,29 @@ struct PilaDocumentosEscritorio
 
         archivo.close();
         return pila;
+    }
+    string firstpila()
+    {
+        string cola = "libre";
+        if(First != nullptr)
+        {
+            FILE *graficar;
+            graficar = fopen("firstpila.txt","w+");
+            NodoPilaDocumentosEscritorio *aux = Last;
+            fprintf(graficar,"nd%p\ ",aux);
+            fclose(graficar);
+
+            fstream archivo("firstpila.txt");
+            string todo;
+            string acum;
+            if(!archivo.is_open())
+                archivo.open("firstpila.txt",ios::in);
+            while(getline(archivo,acum))
+                todo = todo + acum;
+            archivo.close();
+            cola = todo;
+        }
+        return cola;
     }
     int getsize()
     {
@@ -303,50 +318,47 @@ struct PilaDocumentosEscritorio
 struct NodoEscritorio
 {
 private:
-
     string Escritorio;
     int Id;
     bool Estado;
     int Documentos;
-    int Registro;
     int Maletas;
+    int turnos;
     PilaDocumentosEscritorio* Pila;
     ColaPasajerosEscritorio* Cola;
-
 public:
     NodoEscritorio* Next;
     NodoEscritorio* Prev;
-
-
-    NodoEscritorio(PilaDocumentosEscritorio* Pila,ColaPasajerosEscritorio* Cola,string Escritorio,int Id,bool Estado,int Documentos,int Registro,int Maletas)
+    NodoEscritorio(PilaDocumentosEscritorio* Pila,ColaPasajerosEscritorio* Cola,string Escritorio,int Id,bool Estado,int Documentos,int Maletas,int turnos)
     {
         this->Escritorio = Escritorio;
         this->Id = Id;
         this->Estado = Estado;
         this->Documentos = Documentos;
-        this->Registro = Registro;
         this->Maletas = Maletas;
+        this->turnos = turnos;
         this->Pila = Pila;
         this->Cola = Cola;
         Next = nullptr;
         Prev = nullptr;
     }
+
     //Datos de la Cola
     int getIdCola()
     {
-        return Cola->getId();
+        return this->Cola->getId();
     }
     int getMaletasCola()
     {
-        return Cola->getMaletas();
+        return this->Cola->getMaletas();
     }
     int getDocumentosCola()
     {
-        return Cola->getDocumentos();
+        return this->Cola->getDocumentos();
     }
     int getRegistroCola()
     {
-        return Cola->getRegistro();
+        return this->Cola->getturnocola();
     }
     string gColaPasajerosEscritorio()
     {
@@ -364,9 +376,9 @@ public:
     {
         return this->Cola->estallena();
     }
-    void setRegistroCola(int Registro)
+    void setRegistroCola(int turno)
     {
-        this->Cola->setRegistro(Registro);
+        this->Cola->setturnocola(turno);
     }
     void delCola()
     {
@@ -376,6 +388,7 @@ public:
     {
         return this->Cola->estaVacia();
     }
+
     //Datos de la Pila
     string getPilaDocumentosEscritorio()
     {
@@ -389,6 +402,11 @@ public:
     {
         this->Pila->addPilaDocumentosEscritorio(TheNew);
     }
+    string firstpila()
+    {
+        return this->Pila->firstpila();
+    }
+
     //Datos de la Lista Doble Ordenada
     string getEscritorioLista()
     {
@@ -406,38 +424,36 @@ public:
     {
         return this->Documentos;
     }
-    int getRegistroLista()
+    int getturnos()
     {
-        this->Registro;
+        return this->turnos;
     }
-    void setRegistroLista(int Registro)
+    void setturnos(int turnos)
     {
-        this->Registro = Registro;
+        this->turnos = turnos;
     }
     int getMaletasLista()
     {
         return this->Maletas;
     }
-    void setdatos(string Escritorio,int Id,bool Estado,int Documentos,int Registro,int Maletas)
+    void setdatos(string Escritorio,int Id,bool Estado,int Documentos,int Maletas,int turnos)
     {
         this->Escritorio = Escritorio;
         this->Id = Id;
         this->Estado = Estado;
         this->Documentos = Documentos;
-        this->Registro = Registro;
         this->Maletas = Maletas;
+        this->turnos = turnos;
     }
 };
 
 struct ListaDobleOrdenadaEscritorio
 {
-private:
-
+private:    
+    int size;
+public:
     NodoEscritorio* First;
     NodoEscritorio* Last;
-    int size;
-
-public:
     ListaDobleOrdenadaEscritorio()
     {
        First = nullptr;
@@ -450,8 +466,8 @@ public:
     }
     void addListaDobleOrdenadaEscritorio(NodoEscritorio *TheNew)
     {
-       qInfo()<<"Se ingreso al agregar de doble ordenada"<<endl;
-       cout<<TheNew->getEscritorioLista()<<"Se ingreso de primero"<<endl;
+       //qInfo()<<"Se ingreso al agregar de doble ordenada"<<endl;
+       //cout<<TheNew->getEscritorioLista()<<"Se ingreso de primero"<<endl;
        if(First == nullptr)
        {
            First = Last = TheNew;
@@ -539,7 +555,8 @@ public:
     void delall()
     {
         First = Last = nullptr;
-        delete First,Last;
+        delete First;
+        delete Last;
         size = 0;
     }
     string gListaDobleOrdenadaEscritorio()
@@ -559,13 +576,19 @@ public:
                 int Id = aux->getIdLista();
                 string Clave = aux->getEscritorioLista();
                 int Documentos = aux->getDocumentosLista();
-                int Registro = aux->getRegistroLista();
-                bool Estado = aux->getEstadoLista();
-                if (!Estado) {
-                    fprintf(graficar,"nd%p\ [label = \"Escritorio: %s\ \\n Id Cliente: Libre \\n Estado: libre \\n  Documentos: 0 \\n Registro: 0 \" ];\n",aux,Clave.data());
+                int Maletas = aux->getMaletasLista();
+                bool Estado = aux->ColaVacia();
+                int turnos;
+                if(aux->ColaVacia() == false)
+                {
+                    aux->setturnos(aux->getRegistroCola());
+                    turnos = aux->getturnos();
+                }
+                if (Estado == true) {
+                    fprintf(graficar,"nd%p\ [label = \"Escritorio: %s\ \\n Id Cliente: Libre \\n Estado: libre \\n  Documentos: 0 \\n Registro: 0 \\n Maletas: 0 \" ];\n",aux,Clave.data());
                 }
                 else{
-                    fprintf(graficar,"nd%p\ [label = \"Escritorio: %s\ \\n Id Cliente: %d\ \\n Estado: Ocupado \\n  Documentos: %d\ \\n Registro: %d\ \" ];\n",aux,Clave.data(),Id,Documentos,Registro);
+                    fprintf(graficar,"nd%p\ [label = \"Escritorio: %s\ \\n Id Cliente: %d\ \\n Estado: Ocupado \\n  Documentos: %d\ \\n Registro: %d\ \\n Maletas: %d\ \" ];\n",aux,Clave.data(),Id,Documentos,turnos,Maletas);
                 }
                 aux = aux->Next;
             }
@@ -590,11 +613,18 @@ public:
                 aux4 = aux4->Next;
             }
 
+            NodoEscritorio *aux5 = First;
+            while(aux5 != nullptr){
+                fprintf(graficar," %s\ \n",aux5->getPilaDocumentosEscritorio().data());
+                aux5 = aux5->Next;
+            }
+
             NodoEscritorio *aux6 = First;
             while(aux6 != nullptr){
                 if(aux6->ColaVacia()==false)
                 {
-                    fprintf(graficar,"nd%p\ -> %s\ [ penwidth = 2 fontsize = 15 fontcolor = \"black\" label = \"Next\" ];\n",aux6,aux6->firstcola().data());
+                    fprintf(graficar,"nd%p\ -> %s\ [ penwidth = 2 fontsize = 15 fontcolor = \"black\" label = \"Atiende (Cola)\" ];\n",aux6,aux6->firstcola().data());
+                    fprintf(graficar,"nd%p\ -> %s\ [ penwidth = 2 fontsize = 15 fontcolor = \"black\" label = \"Contiene (Pila)\" ];\n",aux6,aux6->firstpila().data());
                 }
                 aux6 = aux6->Next;
             }
@@ -636,18 +666,18 @@ public:
                     int Id = aux->getIdLista();
                     bool Estado = aux->getEstadoLista();
                     int Documentos = aux->getDocumentosLista();
-                    int Registro = aux->getDocumentosLista();
-                    int Maletas = aux->getMaletasCola();
+                    int turnos = aux->getturnos();
+                    int Maletas = aux->getMaletasLista();
 
                     string Escritorio2 = aux2->getEscritorioLista();
                     int Id2 = aux2->getIdLista();
                     bool Estado2 = aux2->getEstadoLista();
                     int Documentos2 = aux2->getDocumentosLista();
-                    int Registro2 = aux2->getDocumentosLista();
-                    int Maletas2 = aux2->getMaletasCola();
+                    int turnos2 = aux2->getturnos();
+                    int Maletas2 = aux2->getMaletasLista();
 
-                    aux->setdatos(Escritorio2,Id2,Estado2,Documentos2,Registro2,Maletas2);
-                    aux2->setdatos(Escritorio,Id,Estado,Documentos,Registro,Maletas);
+                    aux->setdatos(Escritorio2,Id2,Estado2,Documentos2,Maletas2,turnos2);
+                    aux2->setdatos(Escritorio,Id,Estado,Documentos,Maletas,turnos);
                     aux2 = aux2->Next;
                     cont++;
                 }
@@ -673,23 +703,26 @@ public:
             aux = aux->Next;
         }
     }
-    void quitarturnos()
+    int quitarturnos()
     {
+        int quitar = 0;
         NodoEscritorio *aux = First;
         while(aux!=nullptr){
             if(!aux->ColaVacia())
             {
-                if(aux->getRegistroLista() <= 1){
+                if(aux->getRegistroCola() <= 1){
+                    quitar = quitar + aux->getMaletasLista();
                     aux->delCola();
+                    aux->delPila();
                     entrarventanilla();
                 }else{
-                    int dato = aux->getRegistroLista() - 1;
-                    aux->setRegistroLista(dato);
+                    int dato = aux->getRegistroCola() - 1;
                     aux->setRegistroCola(dato);
                 }
             }
             aux=aux->Next;
         }
+        return quitar;
     }
     void entrarventanilla()
     {
@@ -697,11 +730,69 @@ public:
         while(aux!=nullptr){
             if(!aux->ColaVacia())
             {
-                aux->setdatos(aux->getEscritorioLista(),aux->getIdCola(),true,aux->getDocumentosCola(),aux->getRegistroCola(),aux->getMaletasCola());
+                aux->setdatos(aux->getEscritorioLista(),aux->getIdCola(),true,aux->getDocumentosCola(),aux->getMaletasCola(),aux->getturnos());
+                aux->delPila();
+                for(int i = 0; i< aux->getDocumentosCola();i++)
+                {
+                    aux->addPila(new NodoPilaDocumentosEscritorio(i));
+                }
             }
             aux=aux->Next;
         }
     }
-
+    bool colallena()
+    {
+        bool salida = false;
+        NodoEscritorio* aux = First;
+        while(aux!=nullptr)
+        {
+            if(aux->ColaLLena() == true)
+            {
+                salida = true;
+            }
+            else
+            {
+                return salida = false;
+            }
+            aux = aux->Next;
+        }
+        return salida;
+    }
+    int getsize()
+    {
+        return size;
+    }
+    string consola()
+    {
+        NodoEscritorio *aux = First;
+        string consola = "\n         --------- --------- Escritorios de registro --------- --------- \n";
+        if(First != nullptr)
+        {
+            while(aux != nullptr){
+                int Id = aux->getIdLista();
+                string Clave = aux->getEscritorioLista();
+                int Documentos = aux->getDocumentosLista();
+                bool Estado = aux->ColaVacia();
+                int turnos = aux->getturnos();
+                if (Estado == true) {
+                     consola = consola + "Escritorio " + Clave + " : Libre \n ";
+                     consola = consola + "\t Pasajero atendido: ninguno \n";
+                     consola = consola + "\t Turnos restantes: 0 \n";
+                     consola = consola + "\t Cantidad de documentos: 0 \n";
+                }
+                else{
+                    consola = consola + "Escritorio " + Clave + " : Ocupado \n ";
+                    consola = consola + "\t Pasajero atendido: " + to_string(Id) + "\n";
+                    consola = consola + "\t Turnos restantes: " + to_string(turnos) + "\n";
+                    consola = consola + "\t Cantidad de documentos: " + to_string(Documentos) + "\n";
+                }
+                aux = aux->Next;
+            }
+            consola = consola + "         ---------------------------------------------------------------\n";
+            return consola;
+        }
+        consola = consola + "Vacio \n";
+        return consola;
+    }
 };
 #endif // LISTADOBLEORDENADAESCRITORIO_H
